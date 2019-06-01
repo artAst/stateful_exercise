@@ -25,9 +25,32 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  int count = 0;
+  double total = 0.0;
+
+  void handleIconAdd() {
+    setState(() {
+      if(count >= 0) {
+        count += 1;
+        total += 150;
+        //print("count: $count");
+      }
+    });
+  }
+
+  void handleIconMinus(){
+    setState(() {
+      if(count > 0) {
+        count -= 1;
+        total -= 150;
+        //print("count: $count");
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: new Row(
@@ -82,11 +105,19 @@ class _MyHomePageState extends State<MyHomePage> {
                           children: <Widget>[
                             new Text("₱150.00", style: new TextStyle(fontWeight: FontWeight.bold)),
                             new Padding(padding: const EdgeInsets.only(left: 10.0)),
-                            new Icon(Icons.remove_circle),
+                            new InkWell(
+                              onTap: handleIconMinus,
+                              child: new Icon(Icons.remove_circle),
+                            ),
+                            //new IconButton(icon: new Icon(Icons.remove_circle), onPressed: handleIconMinus),
                             new Padding(padding: const EdgeInsets.only(left: 10.0)),
-                            new Text("0", style: new TextStyle(fontWeight: FontWeight.bold)),
+                            new Text("${count}", style: new TextStyle(fontWeight: FontWeight.bold)),
                             new Padding(padding: const EdgeInsets.only(left: 10.0)),
-                            new Icon(Icons.add_circle),
+                            new InkWell(
+                              onTap: handleIconAdd,
+                              child: new Icon(Icons.add_circle),
+                            )
+                            //new IconButton(icon: new Icon(Icons.add_circle), onPressed: handleIconAdd),
                           ],
                         ),
                       ),
@@ -154,6 +185,16 @@ class _MyHomePageState extends State<MyHomePage> {
           )
         ],
       ),
+      bottomNavigationBar: new Container(
+        padding: const EdgeInsets.all(10.0),
+        color: Colors.white,
+        child: new Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            new Text("Total: ₱${total.toStringAsFixed(2)}", style: new TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0))
+          ],
+        ),
+      )
     );
   }
 }
